@@ -5,10 +5,24 @@
     </head>
     <body>
         <h1>Welcome to my Blog</h1>
-        <p>Please post a message</p>
+        
         <p>
             <ul>
-                
+                <p>Here are the posts:</p>
+                    {% for post in oldposts %}
+                    <li>{{ post['post'] }}</li>
+                    {% endfor %}
+
+                    {% for blog in blogposts %}
+                    <li>{{ blog['blogpost'] }}</li>
+                    {% endfor %}
+                    
+                </form>
+                <p>Click here to login</p>
+                    <form action= "login" method = "POST">
+                    <label for="submit">Login</label>
+                    <input type="submit" value="submit">
+                </form>
             </ul>
         </p>
     </body>

@@ -5,29 +5,58 @@ from flask import request, redirect, url_for
 
 app = Flask(__name__)
 
-blogposts= []
+oldposts = [
+    {"Greetings, welcome to my blog!| By: Amber| Posted on: January 2nd"}, 
+    {"Instructions: Feel free to post your thoughts| By: Amber| Posted on: January 4th"}
+]
+
+blogposts= [
+ 
+]
 
 @app.route('/')
 def home():
+    
     return redirect(url_for("blog"))
     
-@app.route('/dashboard')
-def posts():
-    return redirect(url_for("blog"))
-
-@app.route('/blog', methods = ['POST', 'GET'])
-def createblog():
-    return render_template('blog.html', blogposts=blogposts)
-
-@app.route('/addtoblog', methods=['POST', 'GET'])
-def blog():
+@app.route('/login', methods=['POST', 'GET'])
+def login():
     if request.method == 'POST':
-        blog = request.form['blog']
-        blogposts.append(blog)
+        username = request.values.get('username')
+        password = request.values.get('password')
+        if (username == 'user' and password == 'apple'):
+            return redirect(url_for("posts")) 
+        else:
+            return redirect(url_for('login'))
+    return render_template('login.html') 
+    
+ 
+@app.route('/blog', methods=['POST', 'GET'])
+def blog(): 
+    print(oldposts)
+    print(blogposts)
+    return render_template('blog.html', blogposts=blogposts)
+ 
+@app.route('/dashboard',methods = ['POST', 'GET'])
+def posts():
+    if request.method == 'POST':
+        print(oldposts)
+        blog = request.values.get('blogpost') 
+        blogposts.append({blog})
         print(blogposts)
-        return render_template('blog.html', blogposts=blogposts)
+        
+    return render_template('dashboard.html', blogposts=blogposts)
 
+@app.route('/editblog', methods = ['POST', 'GET'])
+def edit():
+    if request.method == 'POST':
+        
+        return redirect(url_for("posts"))
+    return render_template('editblog.html', blogposts=blogposts)
 
-
+@app.route('/delete', methods = ['POST', 'GET'] )
+def delete():
+    if request.method == 'POST':
+        return redirect(url_for("posts"))
 if __name__ == "__main__":
     app.run(debug=True)

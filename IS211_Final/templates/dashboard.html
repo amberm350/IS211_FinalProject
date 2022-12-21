@@ -8,7 +8,26 @@
         <p>Here are a list of your posts:</p>
         <p>
             <ul>
-                
+                {% for blog in blogposts %}
+                <li>{{ blog['blog post'] }}</li>
+                {% endfor %}
             </ul>
+            <form action= "dashboard" method = "POST">
+                <label for="blogpost">Please type a post:</label>
+                <input type="text" id="blogpost" name="blogpost"><br><br>
+
+                <label for="submit">Post message</label>
+                <input type="submit" value="submit">
+            </form>
+            <p>Click here to edit your post</p>
+            <form action= "editblog" method = "POST">
+                <label for="submit">Edit message</label>
+                <input type="submit" value="submit">
+            </form>
+            <p>Click here to delete your post</p>
+            <form action= "dashboard" method = "POST">
+                <label for="submit">Delete message</label>
+                <input type="submit" value="submit">
+            </form>
         </p>
     </body>
