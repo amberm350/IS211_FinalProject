@@ -50,13 +50,18 @@ def posts():
 @app.route('/editblog', methods = ['POST', 'GET'])
 def edit():
     if request.method == 'POST':
+        editpost=  request.values.get("blogpost")
+        edits= request.values.get('edits')
+        newedit= editpost.update(edits)
+        print(newedit)
         
-        return redirect(url_for("posts"))
-    return render_template('editblog.html', blogposts=blogposts)
+    return render_template('dashboard.html', blogposts=blogposts)
 
 @app.route('/delete', methods = ['POST', 'GET'] )
 def delete():
     if request.method == 'POST':
-        return redirect(url_for("posts"))
+        selectpost =  request.values.get("blogpost")
+        selectpost.delete()
+    return render_template('dashboard.html', blogposts=blogposts)
 if __name__ == "__main__":
     app.run(debug=True)
