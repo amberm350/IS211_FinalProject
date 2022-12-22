@@ -6,17 +6,18 @@ from flask import request, redirect, url_for
 app = Flask(__name__)
 
 oldposts = [
-    {"Greetings, welcome to my blog!| By: Amber| Posted on: January 2nd"}, 
-    {"Instructions: Feel free to post your thoughts| By: Amber| Posted on: January 4th"}
+    "Greetings: Welcome to my blog!| By: Amber| Posted on: January 2nd", 
+    "Instructions: Feel free to post your thoughts| By: Amber| Posted on: January 4th"
 ]
 
 blogposts= [
- 
+    "Introduction: My name is Jennifer| By:Jennifer|Posted on: January 6th"
 ]
 
 @app.route('/')
 def home():
-    
+    print(oldposts)
+    print(blogposts)
     return redirect(url_for("blog"))
     
 @app.route('/login', methods=['POST', 'GET'])
@@ -35,23 +36,24 @@ def login():
 def blog(): 
     print(oldposts)
     print(blogposts)
-    return render_template('blog.html', blogposts=blogposts)
+    return render_template('blog.html', oldposts= oldposts, blogposts=blogposts)
  
 @app.route('/dashboard',methods = ['POST', 'GET'])
 def posts():
     if request.method == 'POST':
         print(oldposts)
-        blog = request.values.get('blogpost') 
-        blogposts.append({blog})
+        blog = request.form['blogpost'] 
+        blogposts.append(blog)
         print(blogposts)
-        
+        return redirect(url_for("posts"))
     return render_template('dashboard.html', blogposts=blogposts)
 
 @app.route('/editblog', methods = ['POST', 'GET'])
 def edit():
     if request.method == 'POST':
-        editpost=  request.values.get("blogpost")
-        edits= request.values.get('edits')
+        
+        editpost= request.form['blogpost']
+        edits= request.form['edits']
         newedit= editpost.update(edits)
         print(newedit)
         
@@ -59,9 +61,8 @@ def edit():
 
 @app.route('/delete', methods = ['POST', 'GET'] )
 def delete():
-    if request.method == 'POST':
-        selectpost =  request.values.get("blogpost")
-        selectpost.delete()
-    return render_template('dashboard.html', blogposts=blogposts)
+    selectpost = request.form['blogpost']
+    selectpost.delete()
+    return redirect(url_for('posts'))
 if __name__ == "__main__":
     app.run(debug=True)
